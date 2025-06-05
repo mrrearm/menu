@@ -117,8 +117,8 @@
                 inset 0 0 100px rgba(0, 0, 0, 0.3),
                 0 20px 40px rgba(0, 0, 0, 0.5);
             position: relative;
-            width: 900px;
-            height: 600px;
+            width: 1200px;
+            height: 500px;
             overflow: hidden;
             margin: 0 auto;
         }
@@ -146,9 +146,9 @@
             z-index: 2;
             height: 100%;
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr;
             grid-template-rows: auto 1fr;
-            gap: 20px;
+            gap: 30px;
         }
 
         .menu-header {
@@ -159,57 +159,63 @@
         .menu-left {
             display: flex;
             flex-direction: column;
-            gap: 25px;
+            gap: 20px;
+        }
+
+        .menu-center {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
         .menu-right {
             display: flex;
             flex-direction: column;
-            gap: 25px;
+            gap: 20px;
         }
 
         .menu-title {
             font-family: 'Dancing Script', cursive;
-            font-size: 3em;
+            font-size: 2.5em;
             font-weight: 700;
             color: #f39c12;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
             transform: rotate(-1deg);
         }
 
         .menu-date {
             font-family: 'Satisfy', cursive;
-            font-size: 1.3em;
+            font-size: 1.1em;
             color: #ecf0f1;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             transform: rotate(0.5deg);
         }
 
         .menu-section {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             position: relative;
         }
 
         .section-title {
             font-family: 'Dancing Script', cursive;
-            font-size: 1.8em;
+            font-size: 1.5em;
             font-weight: 600;
             color: #e67e22;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             text-decoration: underline;
             text-decoration-color: #f39c12;
-            text-underline-offset: 6px;
+            text-underline-offset: 4px;
             transform: rotate(-0.5deg);
         }
 
         .section-content {
             font-family: 'Kalam', cursive;
-            font-size: 0.95em;
+            font-size: 0.85em;
             color: #ecf0f1;
-            line-height: 1.4;
+            line-height: 1.3;
             white-space: pre-line;
-            margin-left: 15px;
+            margin-left: 12px;
             transform: rotate(0.2deg);
         }
 
@@ -263,19 +269,31 @@
             .blackboard {
                 width: 95%;
                 height: auto;
-                min-height: 500px;
+                min-height: 400px;
             }
             
+            .menu-content {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .menu-title {
+                font-size: 2em;
+            }
+            
+            .section-title {
+                font-size: 1.3em;
+            }
+        }
+
+        @media (max-width: 480px) {
             .menu-content {
                 grid-template-columns: 1fr;
             }
             
-            .menu-title {
-                font-size: 2.2em;
-            }
-            
-            .section-title {
-                font-size: 1.5em;
+            .blackboard {
+                width: 95%;
+                height: auto;
+                min-height: 500px;
             }
         }
     </style>
@@ -347,7 +365,9 @@
                         <div class="section-title"><span class="food-emoji">🥗</span>Antipasti</div>
                         <div class="section-content" id="displayAntipasti"></div>
                     </div>
-                    
+                </div>
+                
+                <div class="menu-center">
                     <div class="menu-section" id="primiSection" style="display: none;">
                         <div class="section-title"><span class="food-emoji">🍝</span>Primi Piatti</div>
                         <div class="section-content" id="displayPrimi"></div>
