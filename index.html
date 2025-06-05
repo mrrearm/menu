@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu del Giorno - Lavagna</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Dancing+Script:wght@400;500;600;700&family=Satisfy&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Kalam', cursive;
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .controls {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            color: #ecf0f1;
+            font-weight: 500;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            font-family: 'Kalam', cursive;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-family: 'Kalam', cursive;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+            margin-left: 10px;
+        }
+
+        .download-btn:hover {
+            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+        }
+
+        .blackboard {
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(135deg, #1a2332, #0f1419);
+            border: 20px solid #8B4513;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 
+                inset 0 0 100px rgba(0, 0, 0, 0.3),
+                0 20px 40px rgba(0, 0, 0, 0.5);
+            position: relative;
+            width: 900px;
+            height: 600px;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+        .blackboard::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(255, 255, 255, 0.02) 2px,
+                    rgba(255, 255, 255, 0.02) 4px
+                );
+            pointer-events: none;
+        }
+
+        .menu-content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto 1fr;
+            gap: 20px;
+        }
+
+        .menu-header {
+            grid-column: 1 / -1;
+            text-align: center;
+        }
+
+        .menu-left {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .menu-right {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .menu-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3em;
+            font-weight: 700;
+            color: #f39c12;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            transform: rotate(-1deg);
+        }
+
+        .menu-date {
+            font-family: 'Satisfy', cursive;
+            font-size: 1.3em;
+            color: #ecf0f1;
+            margin-bottom: 15px;
+            transform: rotate(0.5deg);
+        }
+
+        .menu-section {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .section-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8em;
+            font-weight: 600;
+            color: #e67e22;
+            margin-bottom: 10px;
+            text-decoration: underline;
+            text-decoration-color: #f39c12;
+            text-underline-offset: 6px;
+            transform: rotate(-0.5deg);
+        }
+
+        .section-content {
+            font-family: 'Kalam', cursive;
+            font-size: 0.95em;
+            color: #ecf0f1;
+            line-height: 1.4;
+            white-space: pre-line;
+            margin-left: 15px;
+            transform: rotate(0.2deg);
+        }
+
+        .food-emoji {
+            font-size: 1.5em;
+            margin-right: 10px;
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        .price {
+            color: #2ecc71;
+            font-weight: 600;
+            float: right;
+            margin-left: 10px;
+        }
+
+        .decorative-border {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            bottom: 15px;
+            border: 3px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            pointer-events: none;
+        }
+
+        .chef-hat {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 2em;
+            transform: rotate(15deg);
+            opacity: 0.7;
+        }
+
+        .fork-knife {
+            position: absolute;
+            bottom: 20px;
+            left: 30px;
+            font-size: 1.5em;
+            transform: rotate(-10deg);
+            opacity: 0.6;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .blackboard {
+                width: 95%;
+                height: auto;
+                min-height: 500px;
+            }
+            
+            .menu-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .menu-title {
+                font-size: 2.2em;
+            }
+            
+            .section-title {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="controls">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="restaurantName">Nome Ristorante</label>
+                    <input type="text" id="restaurantName" value="Gli Sfizi di Gennarino" placeholder="Nome del ristorante">
+                </div>
+                <div class="form-group">
+                    <label for="menuDate">Data</label>
+                    <input type="text" id="menuDate" placeholder="es. Giovedì 5 Giugno 2025">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="antipasti">Antipasti</label>
+                    <textarea id="antipasti" placeholder="• Bruschette della casa - €8
+• Antipasto misto di salumi - €12
+• Caprese con mozzarella di bufala - €10"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="primi">Primi Piatti</label>
+                    <textarea id="primi" placeholder="• Spaghetti carbonara - €14
+• Risotto ai porcini - €16
+• Lasagne della nonna - €13"></textarea>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="secondi">Secondi Piatti</label>
+                    <textarea id="secondi" placeholder="• Bistecca alla griglia - €22
+• Salmone in crosta - €20
+• Pollo arrosto con erbe - €18"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="dolci">Dolci</label>
+                    <textarea id="dolci" placeholder="• Tiramisù della casa - €7
+• Panna cotta ai frutti di bosco - €6
+• Gelato artigianale - €5"></textarea>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <button onclick="updateMenu()">🍽️ Aggiorna Menu</button>
+                <button class="download-btn" onclick="downloadImage()">📥 Scarica Immagine</button>
+                <button onclick="clearAllText()" style="background: linear-gradient(135deg, #e74c3c, #c0392b); margin-left: 10px;">🗑️ Rimuovi Testo</button>
+            </div>
+        </div>
+
+        <div class="blackboard" id="blackboard">
+            <div class="decorative-border"></div>
+            <div class="chef-hat">👨‍🍳</div>
+            <div class="fork-knife">🍴</div>
+            
+            <div class="menu-content">
+                <div class="menu-header">
+                    <div class="menu-title" id="displayTitle">Menu del Giorno</div>
+                    <div class="menu-date" id="displayDate">Gli Sfizi di Gennarino</div>
+                </div>
+                
+                <div class="menu-left">
+                    <div class="menu-section" id="antipastiSection" style="display: none;">
+                        <div class="section-title"><span class="food-emoji">🥗</span>Antipasti</div>
+                        <div class="section-content" id="displayAntipasti"></div>
+                    </div>
+                    
+                    <div class="menu-section" id="primiSection" style="display: none;">
+                        <div class="section-title"><span class="food-emoji">🍝</span>Primi Piatti</div>
+                        <div class="section-content" id="displayPrimi"></div>
+                    </div>
+                </div>
+                
+                <div class="menu-right">
+                    <div class="menu-section" id="secondiSection" style="display: none;">
+                        <div class="section-title"><span class="food-emoji">🥩</span>Secondi Piatti</div>
+                        <div class="section-content" id="displaySecondi"></div>
+                    </div>
+                    
+                    <div class="menu-section" id="dolciSection" style="display: none;">
+                        <div class="section-title"><span class="food-emoji">🍰</span>Dolci</div>
+                        <div class="section-content" id="displayDolci"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Imposta la data di oggi automaticamente
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
+            const dateString = today.toLocaleDateString('it-IT', options);
+            const capitalizedDate = dateString.charAt(0).toUpperCase() + dateString.slice(1);
+            document.getElementById('menuDate').value = capitalizedDate;
+            
+            updateMenu();
+        });
+
+        function updateMenu() {
+            const restaurantName = document.getElementById('restaurantName').value || 'Menu del Giorno';
+            const menuDate = document.getElementById('menuDate').value;
+            const antipasti = document.getElementById('antipasti').value;
+            const primi = document.getElementById('primi').value;
+            const secondi = document.getElementById('secondi').value;
+            const dolci = document.getElementById('dolci').value;
+
+            document.getElementById('displayTitle').textContent = restaurantName;
+            document.getElementById('displayDate').textContent = menuDate;
+
+            updateSection('antipasti', antipasti, 'antipastiSection', 'displayAntipasti');
+            updateSection('primi', primi, 'primiSection', 'displayPrimi');
+            updateSection('secondi', secondi, 'secondiSection', 'displaySecondi');
+            updateSection('dolci', dolci, 'dolciSection', 'displayDolci');
+        }
+
+        function updateSection(sectionName, content, sectionId, displayId) {
+            const section = document.getElementById(sectionId);
+            const display = document.getElementById(displayId);
+            
+            if (content.trim()) {
+                section.style.display = 'block';
+                display.textContent = content;
+            } else {
+                section.style.display = 'none';
+            }
+        }
+
+        function downloadImage() {
+            const blackboard = document.getElementById('blackboard');
+            
+            // Usa html2canvas per convertire l'elemento in immagine
+            const script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+            script.onload = function() {
+                // Aggiungi un piccolo delay per assicurarsi che tutto sia renderizzato
+                setTimeout(() => {
+                    html2canvas(blackboard, {
+                        backgroundColor: 'transparent',
+                        scale: 2,
+                        useCORS: true,
+                        allowTaint: true,
+                        logging: false,
+                        ignoreElements: function(element) {
+                            return false;
+                        },
+                        onrendered: function(canvas) {
+                            console.log('Canvas renderizzato');
+                        }
+                    }).then(function(canvas) {
+                        // Crea un nuovo canvas con sfondo trasparente per l'immagine finale
+                        const finalCanvas = document.createElement('canvas');
+                        const ctx = finalCanvas.getContext('2d');
+                        
+                        finalCanvas.width = canvas.width;
+                        finalCanvas.height = canvas.height;
+                        
+                        // Riempi con uno sfondo trasparente
+                        ctx.clearRect(0, 0, finalCanvas.width, finalCanvas.height);
+                        
+                        // Disegna l'immagine catturata
+                        ctx.drawImage(canvas, 0, 0);
+                        
+                        const link = document.createElement('a');
+                        link.download = 'menu-gli-sfizi-di-gennarino.png';
+                        link.href = finalCanvas.toDataURL('image/png');
+                        link.click();
+                    }).catch(function(error) {
+                        console.error('Errore nel generare l\'immagine:', error);
+                        // Fallback: prova con impostazioni più semplici
+                        html2canvas(blackboard, {
+                            backgroundColor: 'transparent',
+                            scale: 1,
+                            logging: true
+                        }).then(function(canvas) {
+                            const link = document.createElement('a');
+                            link.download = 'menu-gli-sfizi-di-gennarino.png';
+                            link.href = canvas.toDataURL('image/png');
+                            link.click();
+                        }).catch(function(fallbackError) {
+                            console.error('Errore anche nel fallback:', fallbackError);
+                            alert('Errore nel generare l\'immagine. Prova a fare uno screenshot manualmente usando Ctrl+Shift+S (Windows) o Cmd+Shift+4 (Mac).');
+                        });
+                    });
+                }, 500);
+            };
+            
+            // Rimuovi script precedenti se esistono
+            const existingScript = document.querySelector('script[src*="html2canvas"]');
+            if (existingScript) {
+                existingScript.remove();
+            }
+            
+            document.head.appendChild(script);
+        }
+
+        function clearAllText() {
+            // Svuota tutti i campi del form
+            document.getElementById('restaurantName').value = 'Gli Sfizi di Gennarino';
+            document.getElementById('menuDate').value = '';
+            document.getElementById('antipasti').value = '';
+            document.getElementById('primi').value = '';
+            document.getElementById('secondi').value = '';
+            document.getElementById('dolci').value = '';
+            
+            // Imposta la data di oggi
+            const today = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
+            const dateString = today.toLocaleDateString('it-IT', options);
+            const capitalizedDate = dateString.charAt(0).toUpperCase() + dateString.slice(1);
+            document.getElementById('menuDate').value = capitalizedDate;
+            
+            // Aggiorna il menu per riflettere i cambiamenti
+            updateMenu();
+        }
+
+        // Metodo alternativo per il download
+        function downloadImageAlternative() {
+            // Usa un approccio diverso per browser che supportano l'API screen capture
+            if (navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
+                alert('Per scaricare l\'immagine:\n\n1. Scorri fino a vedere completamente la lavagna\n2. Usa lo strumento di screenshot del tuo browser:\n   • Chrome: Ctrl+Shift+I → Più strumenti → Screenshot\n   • Firefox: Shift+F2 → screenshot --selector ".blackboard"\n   • Safari: Develop → Show Web Inspector → Sources\n\nOppure usa gli strumenti di screenshot del sistema operativo.');
+            } else {
+                // Prova con dom-to-image come alternativa
+                const script = document.createElement('script');
+                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/0.10.0/dom-to-image.min.js';
+                script.onload = function() {
+                    const blackboard = document.getElementById('blackboard');
+                    domtoimage.toPng(blackboard, {
+                        quality: 1,
+                        bgcolor: 'transparent',
+                        width: blackboard.offsetWidth,
+                        height: blackboard.offsetHeight
+                    }).then(function(dataUrl) {
+                        const link = document.createElement('a');
+                        link.download = 'menu-gli-sfizi-di-gennarino-alt.png';
+                        link.href = dataUrl;
+                        link.click();
+                    }).catch(function(error) {
+                        console.error('Errore con dom-to-image:', error);
+                        alert('Metodo alternativo fallito. Usa lo screenshot manuale del browser.');
+                    });
+                };
+                document.head.appendChild(script);
+            }
+        }
+    </script>
+</body>
+</html>
